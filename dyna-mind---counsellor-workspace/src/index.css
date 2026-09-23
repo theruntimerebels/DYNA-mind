@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #fbf8fe;
+  --color-surface-dim: #dcd9de;
+  --color-surface-bright: #fbf8fe;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f6f2f8;
+  --color-surface-container: #f0edf2;
+  --color-surface-container-high: #eae7ed;
+  --color-surface-container-highest: #e4e1e7;
+  --color-on-surface: #1b1b1f;
+  --color-on-surface-variant: #574146;
+  --color-inverse-surface: #303034;
+  --color-inverse-on-surface: #f3f0f5;
+  --color-outline: #8b7076;
+  --color-outline-variant: #debfc4;
+  --color-surface-tint: #af275a;
+  --color-primary: #780037;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #9d174d;
+  --color-on-primary-container: #ffafc2;
+  --color-inverse-primary: #ffb1c3;
+  --color-secondary: #5e5e67;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #e0dee9;
+  --color-on-secondary-container: #62626b;
+  --color-tertiary: #004519;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #005f25;
+  --color-on-tertiary-container: #85d78f;
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+  --color-primary-fixed: #ffd9e0;
+  --color-primary-fixed-dim: #ffb1c3;
+  --color-on-primary-fixed: #3f0019;
+  --color-on-primary-fixed-variant: #8e0542;
+  --color-secondary-fixed: #e3e1ec;
+  --color-secondary-fixed-dim: #c7c5d0;
+  --color-on-secondary-fixed: #1a1b23;
+  --color-on-secondary-fixed-variant: #46464f;
+  --color-tertiary-fixed: #a2f6aa;
+  --color-tertiary-fixed-dim: #87d990;
+  --color-on-tertiary-fixed: #002108;
+  --color-on-tertiary-fixed-variant: #00531f;
+  --color-background: #fbf8fe;
+  --color-on-background: #1b1b1f;
+  --color-surface-variant: #e4e1e7;
+
+  --spacing-space-xs: 0.25rem;
+  --spacing-space-sm: 0.5rem;
+  --spacing-space-md: 1rem;
+  --spacing-space-lg: 1.5rem;
+  --spacing-space-xl: 2rem;
+  --spacing-gutter: 1rem;
+  --spacing-gutter-desktop: 1.5rem;
+  --spacing-margin: 1rem;
+  --spacing-margin-desktop: 2rem;
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    background-color: #fbf8fe;
+    color: #1b1b1f;
+  }
+}
+
+/* Tabular figures for clinical metrics */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Material symbol baseline alignment */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* Custom scrollbar hiding */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,320 @@
+import { AssessmentRecord } from '../types';
+
+export const INITIAL_ASSESSMENTS: AssessmentRecord[] = [
+  {
+    id: 'rec-1',
+    caseId: '#DM-1042',
+    clientName: 'A. Kumar',
+    clientAge: 32,
+    clientGender: 'Male',
+    scaleType: 'PHQ-9',
+    scaleName: 'PHQ-9',
+    scaleSubtitle: 'Patient Health Questionnaire',
+    badgeCode: 'P9',
+    badgeBg: 'bg-[#e3e1ec]',
+    badgeColor: 'text-[#780037]',
+    completedAt: '12 May 2026',
+    scoreText: '6/27',
+    rawScore: 6,
+    maxScore: 27,
+    scoreTag: 'Mild',
+    scoreTagStyle: 'mild',
+    indicationText: 'Mild depression indicators',
+    status: 'REVIEWED',
+    statusLabel: 'Reviewed',
+    actionType: 'view_full',
+    actionLabel: 'View Full Responses',
+    actionStyle: 'default',
+    historyTrajectory: [11, 9, 8, 6],
+    clinicalNotes: 'Client demonstrates steady cognitive recovery following session 4 behavioral activation exercises. Sleep hygiene improved.',
+    assignedBy: 'Dr. Ananya Sharma',
+    responses: [
+      { questionNumber: 1, questionText: 'Little interest or pleasure in doing things', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 2, questionText: 'Feeling down, depressed, or hopeless', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 3, questionText: 'Trouble falling or staying asleep, or sleeping too much', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 4, questionText: 'Feeling tired or having little energy', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 5, questionText: 'Poor appetite or overeating', responseScore: 0, responseLabel: 'Not at all' },
+      { questionNumber: 6, questionText: 'Feeling bad about yourself — or that you are a failure', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 7, questionText: 'Trouble concentrating on things, such as reading or watching TV', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 8, questionText: 'Moving or speaking slowly, or being fidgety/restless', responseScore: 0, responseLabel: 'Not at all' },
+      { questionNumber: 9, questionText: 'Thoughts that you would be better off dead, or of hurting yourself', responseScore: 0, responseLabel: 'Not at all', isCriticalAlert: false },
+    ]
+  },
+  {
+    id: 'rec-2',
+    caseId: '#DM-1037',
+    clientName: 'R. Singh',
+    clientAge: 27,
+    clientGender: 'Female',
+    scaleType: 'GAD-7',
+    scaleName: 'GAD-7',
+    scaleSubtitle: 'General Anxiety Disorder-7',
+    badgeCode: 'G7',
+    badgeBg: 'bg-[#e3e1ec]',
+    badgeColor: 'text-[#780037]',
+    completedAt: 'Yesterday, 16:20',
+    scoreText: '12/21',
+    rawScore: 12,
+    maxScore: 21,
+    deltaText: '+4 pt delta',
+    scoreTag: '+4 pt delta',
+    scoreTagStyle: 'delta',
+    indicationText: 'Moderate anxiety indicators',
+    status: 'NEEDS_REVIEW',
+    statusLabel: 'Needs Review',
+    actionType: 'review',
+    actionLabel: 'Review Responses',
+    actionStyle: 'primary',
+    historyTrajectory: [8, 8, 8, 12],
+    clinicalNotes: 'Sudden spike linked to pending academic qualifying examinations. Discussed somatic grounding techniques in last asynchronous note.',
+    assignedBy: 'Dr. Ananya Sharma',
+    responses: [
+      { questionNumber: 1, questionText: 'Feeling nervous, anxious, or on edge', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 2, questionText: 'Not being able to stop or control worrying', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 3, questionText: 'Worrying too much about different things', responseScore: 3, responseLabel: 'Nearly every day' },
+      { questionNumber: 4, questionText: 'Trouble relaxing', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 5, questionText: 'Being so restless that it is hard to sit still', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 6, questionText: 'Becoming easily annoyed or irritable', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 7, questionText: 'Feeling afraid, as if something awful might happen', responseScore: 1, responseLabel: 'Several days' },
+    ]
+  },
+  {
+    id: 'rec-3',
+    caseId: '#DM-1048',
+    clientName: 'T. Mehra',
+    clientAge: 41,
+    clientGender: 'Non-binary',
+    scaleType: 'PHQ-9',
+    scaleName: 'PHQ-9',
+    scaleSubtitle: 'Patient Health Questionnaire',
+    badgeCode: 'P9',
+    badgeBg: 'bg-[#ffdad6]',
+    badgeColor: 'text-[#93000a]',
+    completedAt: 'Yesterday, 11:05',
+    scoreText: '16/27',
+    rawScore: 16,
+    maxScore: 27,
+    scoreTag: 'Elevated',
+    scoreTagStyle: 'elevated',
+    indicationText: 'Moderately severe indicators flagged',
+    status: 'FLAGGED',
+    statusLabel: 'Flagged for Review',
+    actionType: 'clinical_review',
+    actionLabel: 'Clinical Review',
+    actionStyle: 'error',
+    historyTrajectory: [12, 14, 15, 16],
+    clinicalNotes: 'Automated Tier 3 routing triggered. Scale score exceeds 15 threshold with persistent psychomotor fatigue and pervasive anhedonia.',
+    assignedBy: 'Dr. Ananya Sharma',
+    responses: [
+      { questionNumber: 1, questionText: 'Little interest or pleasure in doing things', responseScore: 3, responseLabel: 'Nearly every day' },
+      { questionNumber: 2, questionText: 'Feeling down, depressed, or hopeless', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 3, questionText: 'Trouble falling or staying asleep, or sleeping too much', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 4, questionText: 'Feeling tired or having little energy', responseScore: 3, responseLabel: 'Nearly every day' },
+      { questionNumber: 5, questionText: 'Poor appetite or overeating', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 6, questionText: 'Feeling bad about yourself — or that you are a failure', responseScore: 2, responseLabel: 'More than half the days' },
+      { questionNumber: 7, questionText: 'Trouble concentrating on things, such as reading or watching TV', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 8, questionText: 'Moving or speaking slowly, or being fidgety/restless', responseScore: 1, responseLabel: 'Several days' },
+      { questionNumber: 9, questionText: 'Thoughts that you would be better off dead, or of hurting yourself', responseScore: 0, responseLabel: 'Not at all', isCriticalAlert: false },
+    ]
+  },
+  {
+    id: 'rec-4',
+    caseId: '#DM-1028',
+    clientName: 'S. Patel',
+    clientAge: 24,
+    clientGender: 'Female',
+    scaleType: 'WELLBEING',
+    scaleName: 'Weekly Wellbeing Index',
+    scaleSubtitle: '10-item self-report scale',
+    badgeCode: 'WI',
+    badgeBg: 'bg-[#a2f6aa]',
+    badgeColor: 'text-[#002108]',
+    completedAt: 'Today, 08:30',
+    scoreText: '74/100',
+    rawScore: 74,
+    maxScore: 100,
+    scoreTag: 'Optimal',
+    scoreTagStyle: 'optimal',
+    indicationText: 'Positive trend, stable functioning',
+    status: 'REVIEWED',
+    statusLabel: 'Reviewed',
+    actionType: 'view_summary',
+    actionLabel: 'View Summary',
+    actionStyle: 'default',
+    historyTrajectory: [58, 62, 69, 74],
+    clinicalNotes: 'Consistent week-over-week gains across interpersonal functioning and emotional regulation domains.',
+    assignedBy: 'Dr. Ananya Sharma',
+    responses: [
+      { questionNumber: 1, questionText: 'I felt cheerful and in good spirits', responseScore: 8, responseLabel: 'Most of the time (8/10)' },
+      { questionNumber: 2, questionText: 'I felt calm and relaxed', responseScore: 7, responseLabel: 'More than half (7/10)' },
+      { questionNumber: 3, questionText: 'I felt active and vigorous', responseScore: 8, responseLabel: 'Most of the time (8/10)' },
+      { questionNumber: 4, questionText: 'I woke up feeling fresh and rested', responseScore: 7, responseLabel: 'More than half (7/10)' },
+      { questionNumber: 5, questionText: 'My daily life has been filled with things that interest me', responseScore: 8, responseLabel: 'Most of the time (8/10)' },
+      { questionNumber: 6, questionText: 'I felt connected with friends and loved ones', responseScore: 7, responseLabel: 'More than half (7/10)' },
+      { questionNumber: 7, questionText: 'I felt capable of coping with daily responsibilities', responseScore: 8, responseLabel: 'High confidence (8/10)' },
+      { questionNumber: 8, questionText: 'I felt able to regulate stress when tensions arose', responseScore: 7, responseLabel: 'Good regulation (7/10)' },
+      { questionNumber: 9, questionText: 'I engaged in meaningful creative or leisure activity', responseScore: 7, responseLabel: 'Several times (7/10)' },
+      { questionNumber: 10, questionText: 'Overall feeling of psychological balance and optimism', responseScore: 7, responseLabel: 'Positive (7/10)' },
+    ]
+  },
+  {
+    id: 'rec-5',
+    caseId: '#DM-1019',
+    clientName: 'N. Verma',
+    clientAge: 35,
+    clientGender: 'Male',
+    scaleType: 'GAD-7',
+    scaleName: 'GAD-7',
+    scaleSubtitle: 'General Anxiety Disorder-7',
+    badgeCode: 'G7',
+    badgeBg: 'bg-[#e3e1ec]',
+    badgeColor: 'text-[#780037]',
+    completedAt: 'Pending',
+    scoreText: '—',
+    scoreTag: 'Overdue',
+    scoreTagStyle: 'pending',
+    indicationText: '',
+    status: 'OVERDUE',
+    statusLabel: 'Overdue',
+    actionType: 'send_reminder',
+    actionLabel: 'Send Reminder',
+    actionStyle: 'reminder',
+    assignedBy: 'Dr. Ananya Sharma',
+    reminderSent: false,
+    responses: []
+  }
+];
+
+export const SCALE_DEFINITIONS = [
+  {
+    code: 'PHQ-9',
+    name: 'Patient Health Questionnaire-9',
+    description: 'A 9-question instrument given to outpatients in primary care and mental health to screen for the presence and severity of depression.',
+    itemsCount: 9,
+    scoringRange: '0 - 27 points',
+    cutoffs: [
+      { range: '0 - 4', label: 'Minimal / None', action: 'Routine monitoring' },
+      { range: '5 - 9', label: 'Mild Depression', action: 'Supportive counseling & lifestyle guidance' },
+      { range: '10 - 14', label: 'Moderate Depression', action: 'Psychotherapy (CBT/DBT) & symptom tracker' },
+      { range: '15 - 19', label: 'Moderately Severe Depression', action: 'Intensive psychotherapy; psychiatric consultation' },
+      { range: '20 - 27', label: 'Severe Depression', action: 'Immediate clinical review & safety planning' },
+    ],
+    criticalTrigger: 'Item #9 (Passive/Active Suicidal Ideation) > 0 triggers mandatory Tier 3 clinical risk escalation.'
+  },
+  {
+    code: 'GAD-7',
+    name: 'Generalized Anxiety Disorder-7',
+    description: 'A 7-item self-administered patient questionnaire used as a screening tool and severity measure for generalized anxiety disorder.',
+    itemsCount: 7,
+    scoringRange: '0 - 21 points',
+    cutoffs: [
+      { range: '0 - 4', label: 'Minimal Anxiety', action: 'Standard check-in' },
+      { range: '5 - 9', label: 'Mild Anxiety', action: 'Relaxation training & psychoeducation' },
+      { range: '10 - 14', label: 'Moderate Anxiety', action: 'CBT for anxiety & worry exposure' },
+      { range: '15 - 21', label: 'Severe Anxiety', action: 'Clinical escalation & pharmacological review' },
+    ],
+    criticalTrigger: 'Scores ≥ 15 or rapid delta jump (≥ +4 pts in 14 days) generate supervisor alerts.'
+  },
+  {
+    code: 'PSS-10',
+    name: 'Perceived Stress Scale-10',
+    description: 'The most widely used psychological instrument for measuring the perception of stress in life situations.',
+    itemsCount: 10,
+    scoringRange: '0 - 40 points',
+    cutoffs: [
+      { range: '0 - 13', label: 'Low Perceived Stress', action: 'Preventative wellness' },
+      { range: '14 - 26', label: 'Moderate Perceived Stress', action: 'Stress reduction counseling' },
+      { range: '27 - 40', label: 'High Perceived Stress', action: 'Intensive intervention' },
+    ],
+    criticalTrigger: 'Sustained scores above 28 correlate with autonomic dysregulation.'
+  },
+  {
+    code: 'WELLBEING',
+    name: 'Weekly Wellbeing Index (WHO-5 adapted)',
+    description: 'Positively phrased psychometric scale measuring subjective psychological wellbeing over the past week.',
+    itemsCount: 10,
+    scoringRange: '0 - 100 points',
+    cutoffs: [
+      { range: '0 - 28', label: 'Substantial Distress', action: 'Diagnostic depression screen triggered' },
+      { range: '29 - 50', label: 'Reduced Wellbeing', action: 'Goal setting and behavioural review' },
+      { range: '51 - 100', label: 'Optimal / Stable', action: 'Maintenance and resilience reinforcement' },
+    ],
+    criticalTrigger: 'Scores below 28 indicate risk of clinical depressive episode.'
+  }
+];
+
+export const MOCK_NOTIFICATIONS = [
+  {
+    id: 'n1',
+    title: 'Tier 3 Triage Alert: #DM-1048',
+    message: 'T. Mehra scored 16/27 on PHQ-9. Priority review requested by intake protocol.',
+    time: 'Yesterday, 11:06',
+    unread: true,
+    severity: 'critical'
+  },
+  {
+    id: 'n2',
+    title: 'Delta Shift Warning: #DM-1037',
+    message: 'R. Singh recorded +4 point increase on GAD-7 compared to previous baseline.',
+    time: 'Yesterday, 16:22',
+    unread: true,
+    severity: 'warning'
+  },
+  {
+    id: 'n3',
+    title: 'Assessment Completed: #DM-1028',
+    message: 'S. Patel completed Weekly Wellbeing Index with an optimal score of 74/100.',
+    time: 'Today, 08:31',
+    unread: true,
+    severity: 'info'
+  },
+  {
+    id: 'n4',
+    title: 'System Protocol Update: PSS-2026.4',
+    message: 'Standard reassessment window set to 14 days for all active depression cohorts.',
+    time: '2 days ago',
+    unread: false,
+    severity: 'system'
+  }
+];
+
+export const MOCK_MESSAGES = [
+  {
+    id: 'm1',
+    clientName: 'T. Mehra',
+    caseId: '#DM-1048',
+    snippet: 'Dr. Sharma, I completed the questionnaire. Feeling quite overwhelmed with the sleep disruptions lately...',
+    time: 'Yesterday, 11:15',
+    unread: true,
+    avatar: 'TM',
+    messages: [
+      { sender: 'client', text: 'Dr. Sharma, I completed the questionnaire. Feeling quite overwhelmed with the sleep disruptions lately...', time: 'Yesterday, 11:15' },
+      { sender: 'counsellor', text: 'Hello T., thank you for sharing your responses promptly. I noticed the score elevation and scheduled a check-in for us tomorrow at 2:00 PM. Please remember our grounding routine if anxious thoughts emerge.', time: 'Yesterday, 12:40' }
+    ]
+  },
+  {
+    id: 'm2',
+    clientName: 'R. Singh',
+    caseId: '#DM-1037',
+    snippet: 'Will the test results be shared with my academic advisor or remain strictly confidential?',
+    time: 'Yesterday, 17:02',
+    unread: true,
+    avatar: 'RS',
+    messages: [
+      { sender: 'client', text: 'Will the test results be shared with my academic advisor or remain strictly confidential?', time: 'Yesterday, 17:02' },
+      { sender: 'counsellor', text: 'Hi R., your psychometric scores and session notes are 100% confidential under clinical ethics and EHR regulations. Nothing is shared without your explicit written release.', time: 'Yesterday, 17:25' }
+    ]
+  },
+  {
+    id: 'm3',
+    clientName: 'N. Verma',
+    caseId: '#DM-1019',
+    snippet: 'Sorry I missed the deadline for the anxiety scale. Can you re-send the direct mobile link?',
+    time: 'Today, 07:15',
+    unread: true,
+    avatar: 'NV',
+    messages: [
+      { sender: 'client', text: 'Sorry I missed the deadline for the anxiety scale. Can you re-send the direct mobile link?', time: 'Today, 07:15' }
+    ]
+  }
+];

@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --font-headline: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --color-primary: #36314e;
+  --color-primary-container: #4d4866;
+  --color-primary-fixed: #e6deff;
+  --color-primary-fixed-dim: #c9c2e6;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #bfb8db;
+  --color-on-primary-fixed: #1c1833;
+  --color-on-primary-fixed-variant: #484361;
+
+  --color-secondary: #5e5b7a;
+  --color-secondary-container: #ded9fe;
+  --color-secondary-fixed: #e4dfff;
+  --color-secondary-fixed-dim: #c8c2e7;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #615d7d;
+  --color-on-secondary-fixed: #1b1833;
+  --color-on-secondary-fixed-variant: #464361;
+
+  --color-tertiary: #6d003c;
+  --color-tertiary-container: #930d54;
+  --color-tertiary-fixed: #ffd9e3;
+  --color-tertiary-fixed-dim: #ffb0cb;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #ffa0c2;
+  --color-on-tertiary-fixed: #3e0020;
+  --color-on-tertiary-fixed-variant: #8c034f;
+
+  --color-surface: #faf9fc;
+  --color-surface-dim: #dadadc;
+  --color-surface-bright: #faf9fc;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4f3f6;
+  --color-surface-container: #eeedf0;
+  --color-surface-container-high: #e8e8eb;
+  --color-surface-container-highest: #e3e2e5;
+  --color-surface-variant: #e3e2e5;
+
+  --color-on-surface: #1a1c1e;
+  --color-on-surface-variant: #48464d;
+  --color-outline: #79767e;
+  --color-outline-variant: #c9c5ce;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+}
+
+@layer base {
+  html, body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #faf9fc;
+    color: #1a1c1e;
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

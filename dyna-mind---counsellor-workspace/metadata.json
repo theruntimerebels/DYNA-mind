@@ -1,0 +1,6 @@
+{
+  "name": "DYNA MIND - Counsellor Workspace",
+  "description": "Clinical psychiatric assessment and triage monitoring platform for counsellor evaluation and patient intake.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
