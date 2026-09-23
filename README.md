@@ -780,7 +780,3 @@ A project developed for **Smart India Hackathon 2026**.
 The project focuses on applying AI, conversational interfaces, longitudinal analysis, and personalized modeling to support early identification of psychological distress.
 
 ---
-
-## License
-
-License information will be added as the project moves toward public release.
