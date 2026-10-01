@@ -13,37 +13,26 @@ export const ASSETS = {
     'https://lh3.googleusercontent.com/aida-public/AB6AXuApiBMGuEOOim6c1B3gw6UzIJ9ZgPP_pNXG5weUX-RDkGd-O5dc4ZIBaBTWkj2X1GXVqxzEAVHys28ld6yOZFVQmq4ozvYG0PIbFI7InZj2b_fYMfQEQ54aFFoaA3w6luW7fbM7u_20rzCmgY9ix85m-kJX2IyC7wNBG-65aHDMVALJ_jZvUWCQdtic01yXPecwoPzmGe7iucpN4jdYYrW_RlaMAlJJTk4cBKITZ5atA0iIKoOo_J20iw',
 };
 
+// Zero-state shown until the backend returns real monitoring data for this session.
 export const INITIAL_BIOMETRICS: BiometricIndicators = {
-  distressIndex: 34,
-  sleepHours: 6.8,
-  stabilityQuotient: 82,
-  deviationVariance: 14,
-  stabilityState: 'Anchored',
-  calibratedLogs: 14,
-  stressResponse: 72,
-  sleepIntegrity: 58,
-  wellbeingScore: 64,
+  distressIndex: 0,
+  sleepHours: 0,
+  stabilityQuotient: 0,
+  deviationVariance: 0,
+  stabilityState: 'Calibrating',
+  calibratedLogs: 0,
+  stressResponse: 0,
+  sleepIntegrity: 0,
+  wellbeingScore: 0,
 };
 
+// Local greeting only; real conversation history is loaded from the backend.
 export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
   {
-    id: 'msg-1',
+    id: 'msg-greeting',
     sender: 'companion',
-    text: 'Hi Elena. I am here with you. Take your time, breathe at your own pace, and tell me: how is your headspace feeling this morning?',
-    time: '09:42 AM',
-  },
-  {
-    id: 'msg-2',
-    sender: 'user',
-    text: 'I have been feeling intense chest tightness and dread about the upcoming court hearing next Tuesday.',
-    time: '09:44 AM',
-    status: 'Delivered',
-  },
-  {
-    id: 'msg-3',
-    sender: 'companion',
-    text: 'Facing legal proceedings creates an immense somatic load. That chest tightness is your nervous system doing its best to shield you. Would you like to unpack what feels most intimidating about Tuesday, or shall we try a two-minute grounding exercise first?',
-    time: '09:44 AM',
+    text: 'Hi. I am here with you. Take your time, and tell me: how are you feeling today?',
+    time: '',
   },
 ];
 

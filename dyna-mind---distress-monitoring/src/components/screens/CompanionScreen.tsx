@@ -20,12 +20,12 @@ import {
 } from 'lucide-react';
 import { ChatMessage, BiometricIndicators } from '../../types';
 import { ARCHIVED_SESSIONS } from '../../data/mockData';
-import { sendChatMessageToGemini, speakVoiceTurn } from '../../services/geminiService';
+import { sendChatMessageToGemini, speakVoiceTurn, describeError } from '../../services/geminiService';
 
 interface CompanionScreenProps {
   messages: ChatMessage[];
   biometrics: BiometricIndicators;
-  onSendMessage: (text: string, contextTag?: string) => void;
+  onSendMessage: (text: string, contextTag?: string, sender?: 'user' | 'companion') => void;
   onStartVoice: () => void;
   onOpenSafety: () => void;
   onOpenPrivacy: () => void;
@@ -43,6 +43,7 @@ export const CompanionScreen: React.FC<CompanionScreenProps> = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [sendError, setSendError] = useState<{ text: string; message: string } | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [searchHistory, setSearchHistory] = useState('');
   const [selectedMood, setSelectedMood] = useState<string | null>('Tense');
@@ -110,35 +111,31 @@ export const CompanionScreen: React.FC<CompanionScreenProps> = ({
     }
   };
 
-  const handleSend = async (textToSend?: string) => {
+  const handleSend = async (textToSend?: string, isRetry = false) => {
     const text = textToSend || inputText;
-    if (!text.trim()) return;
+    if (!text.trim() || isTyping) return;
 
-    // Post user message
-    onSendMessage(text, contextTag || undefined);
-    setInputText('');
-    setContextTag(null);
+    // Show the user's message immediately (not again on retry).
+    if (!isRetry) {
+      onSendMessage(text, contextTag || undefined);
+      setInputText('');
+      setContextTag(null);
+    }
+    setSendError(null);
 
-    // Call Gemini API through our full-stack endpoint
+    // Real backend call: backend -> Gemini -> analysis -> persistence
     setIsTyping(true);
     try {
-      const companionReply = await sendChatMessageToGemini(
-        messages,
-        text,
-        biometrics
-      );
+      const companionReply = await sendChatMessageToGemini(messages, text, biometrics);
       setIsTyping(false);
-      onSendMessage(companionReply, 'DYNA MIND Anchor');
+      onSendMessage(companionReply, 'DYNA MIND', 'companion');
 
       if (speakResponses) {
         speakVoiceTurn(companionReply);
       }
     } catch (err) {
       setIsTyping(false);
-      onSendMessage(
-        'I am right here with you, Elena. Let us take an unhurried breath together.',
-        'Somatic Anchor'
-      );
+      setSendError({ text, message: describeError(err) });
     }
   };
 
@@ -160,21 +157,19 @@ export const CompanionScreen: React.FC<CompanionScreenProps> = ({
     onSendMessage(moodText, 'Somatic Mood');
 
     setIsTyping(true);
+    setSendError(null);
     try {
-      const companionReply = await sendChatMessageToGemini(
-        messages,
-        `Elena just checked in with a somatic state of "${selectedMood}". Provide a 2-sentence soothing acknowledgement and grounding check.`,
-        biometrics
-      );
+      const companionReply = await sendChatMessageToGemini(messages, moodText, biometrics);
       setIsTyping(false);
-      onSendMessage(companionReply, 'Somatic Telemetry');
+      onSendMessage(companionReply, 'DYNA MIND', 'companion');
       setMoodSubmitted(false);
       if (speakResponses) {
         speakVoiceTurn(companionReply);
       }
-    } catch {
+    } catch (err) {
       setIsTyping(false);
       setMoodSubmitted(false);
+      setSendError({ text: moodText, message: describeError(err) });
     }
   };
 
@@ -488,6 +483,19 @@ export const CompanionScreen: React.FC<CompanionScreenProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-bounce [animation-delay:0.2s]" />
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-bounce [animation-delay:0.4s]" />
             </div>
+          </div>
+        )}
+
+        {sendError && (
+          <div role="alert" className="self-start max-w-[85%] p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-[12.5px] flex items-center gap-3">
+            <span>{sendError.message}</span>
+            <button
+              type="button"
+              onClick={() => handleSend(sendError.text, true)}
+              className="px-2.5 py-1 rounded-full bg-red-100 hover:bg-red-200 font-semibold cursor-pointer"
+            >
+              Retry
+            </button>
           </div>
         )}
 

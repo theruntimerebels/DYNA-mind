@@ -10,7 +10,7 @@ import {
   Lock,
   Compass,
 } from 'lucide-react';
-import { sendVoiceTurnToGemini, speakVoiceTurn } from '../../services/geminiService';
+import { sendVoiceTurnToGemini, speakVoiceTurn, describeError } from '../../services/geminiService';
 import { ChatMessage } from '../../types';
 
 interface VoiceModalProps {
@@ -115,14 +115,11 @@ export const VoiceModal: React.FC<VoiceModalProps> = ({
       if (!isMuted) {
         speakVoiceTurn(aiReply);
       }
-    } catch {
+    } catch (err) {
+      // Honest failure: show the error instead of a canned reply that never went through the pipeline.
       setIsProcessing(false);
-      const fallback = 'Take a slow, deep breath with me, Elena. Let your shoulders soften down.';
-      setSpeaker('ai');
-      setActiveCaption(`“${fallback}”`);
-      if (!isMuted) {
-        speakVoiceTurn(fallback);
-      }
+      setSpeaker('listening');
+      setActiveCaption(`${describeError(err)} Please say that again.`);
     }
   };
 

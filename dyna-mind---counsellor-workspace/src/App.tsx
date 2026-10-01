@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { NavTab, AssessmentRecord } from './types';
-import { INITIAL_ASSESSMENTS } from './data/mockData';
+import { loadDashboard } from './services/adapter';
+import { updateFollowUp, type Overview } from './services/api';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { MetricCards } from './components/MetricCards';
@@ -36,7 +37,29 @@ import {
 export default function App() {
   const [currentTab, setCurrentTab] = useState<NavTab>('assessments');
   const [globalSearch, setGlobalSearch] = useState('');
-  const [assessments, setAssessments] = useState<AssessmentRecord[]>(INITIAL_ASSESSMENTS);
+  const [assessments, setAssessments] = useState<AssessmentRecord[]>([]);
+  const [overview, setOverview] = useState<Overview | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(async () => {
+    try {
+      const d = await loadDashboard();
+      setAssessments(d.records);
+      setOverview(d.overview);
+      setLoadError(null);
+    } catch (e: any) {
+      setLoadError(e?.message || 'Could not load dashboard data.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refresh();
+    const t = setInterval(refresh, 20000);
+    return () => clearInterval(t);
+  }, [refresh]);
   const [selectedAssessment, setSelectedAssessment] = useState<AssessmentRecord | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -80,6 +103,14 @@ export default function App() {
         return item;
       })
     );
+    // Persist to the backend follow-up record when one is active for this case.
+    const target: 'acknowledged' | 'in_progress' | null =
+      newStatus === 'REVIEWED' ? 'acknowledged' : newStatus === 'NEEDS_REVIEW' ? 'in_progress' : null;
+    if (target) {
+      updateFollowUp(id, target, notes ?? '')
+        .then(() => refresh())
+        .catch(() => showToast('Saved locally only: no active follow-up on the server for this case.'));
+    }
     showToast(`Status updated to ${newStatus}`);
   };
 
@@ -87,27 +118,29 @@ export default function App() {
     setAssessments((prev) =>
       prev.map((item) => {
         if (item.id === record.id) {
-          return { ...item, reminderSent: true };
+          return item;
         }
         return item;
       })
     );
-    showToast(`Secure SMS reminder dispatched to ${record.clientName} (${record.caseId})`);
+    // Honest: no SMS/e-mail channel exists in this prototype.
+    showToast('Reminders are not implemented in this prototype. No message was sent.');
   };
 
   const handleAddNewAssessment = (newRec: AssessmentRecord) => {
     setAssessments((prev) => [newRec, ...prev]);
-    showToast(`Assessment ${newRec.scaleName} dispatched to ${newRec.clientName}`);
+    showToast('Assignment recorded in this view only. No message was sent to the client.');
   };
 
   const handleBatchSuccess = (count: number) => {
-    showToast(`Batch assigned successfully to ${count} active cohort clients.`);
+    showToast(`Batch recorded in this view only (${count} clients). No messages were sent.`);
   };
 
-  const completedCount = 42;
-  const pendingCount = 8;
-  const flaggedCount = assessments.filter((a) => a.status === 'FLAGGED').length || 3;
-  const dueCount = 6;
+  // Real counts from the backend (completedCount = monitored cases with data; due = needing human review).
+  const completedCount = assessments.filter((a) => a.status !== 'PENDING').length;
+  const pendingCount = assessments.filter((a) => a.status === 'PENDING').length;
+  const flaggedCount = assessments.filter((a) => a.status === 'FLAGGED').length;
+  const dueCount = overview?.requiringFollowUp ?? assessments.filter((a) => a.status === 'NEEDS_REVIEW' || a.status === 'FLAGGED').length;
 
   return (
     <div className="min-h-screen bg-[#fbf8fe] text-[#1b1b1f] font-sans antialiased">
@@ -116,6 +149,17 @@ export default function App() {
         <div className="fixed bottom-5 right-5 z-50 bg-[#1b1b1f] text-[#ffffff] px-4 py-2.5 rounded-xl shadow-lg text-[0.875rem] font-medium flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2 duration-200">
           <span className="material-symbols-outlined text-[18px] text-[#a2f6aa]">check_circle</span>
           <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {loadError && (
+        <div role="alert" className="fixed top-16 inset-x-4 z-50 mx-auto max-w-2xl rounded-lg bg-[#ffdad6] text-[#93000a] px-4 py-2.5 text-[0.8125rem] font-medium text-center">
+          {loadError}
+        </div>
+      )}
+      {!loading && !loadError && assessments.length === 0 && (
+        <div className="fixed top-16 inset-x-4 z-40 mx-auto max-w-2xl rounded-lg bg-[#e3e1ec] text-[#1b1b1f] px-4 py-2.5 text-[0.8125rem] text-center">
+          No monitored users yet. Cases appear here after someone uses the patient app.
         </div>
       )}
 

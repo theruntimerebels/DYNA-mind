@@ -1,0 +1,11 @@
+{
+  "name": "dyna-mind",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix dyna-mind---distress-monitoring install && npm --prefix dyna-mind---counsellor-workspace install && npm install",
+    "dev": "concurrently -k -n api,patient,counsellor -c blue,green,magenta \"npm --prefix server run dev\" \"npm --prefix dyna-mind---distress-monitoring run dev\" \"npm --prefix dyna-mind---counsellor-workspace run dev\"",
+    "build": "npm --prefix server run build && npm --prefix dyna-mind---distress-monitoring run build && npm --prefix dyna-mind---counsellor-workspace run build",
+    "test": "npm --prefix server test"
+  },
+  "devDependencies": { "concurrently": "^9.1.0" }
+}

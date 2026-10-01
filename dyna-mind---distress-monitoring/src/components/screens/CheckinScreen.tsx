@@ -12,7 +12,7 @@ import {
 import { NavigationTab, CheckinRecord } from '../../types';
 
 interface CheckinScreenProps {
-  onSaveCheckin: (record: CheckinRecord) => void;
+  onSaveCheckin: (record: CheckinRecord) => Promise<void> | void;
   onNavigateToCompanion: () => void;
   onNavigateToResources: () => void;
 }
@@ -34,6 +34,8 @@ export const CheckinScreen: React.FC<CheckinScreenProps> = ({
   const [isRecordingMemo, setIsRecordingMemo] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const emotionsList = [
     'Grounded',
@@ -92,7 +94,8 @@ export const CheckinScreen: React.FC<CheckinScreenProps> = ({
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (saving) return;
     const record: CheckinRecord = {
       id: `chk-${Date.now()}`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
@@ -106,7 +109,16 @@ export const CheckinScreen: React.FC<CheckinScreenProps> = ({
       notes,
     };
 
-    onSaveCheckin(record);
+    setSaving(true);
+    setSaveError(null);
+    try {
+      await onSaveCheckin(record);
+    } catch (e: any) {
+      setSaving(false);
+      setSaveError(e?.message || 'Could not save your check-in. Please try again.');
+      return;
+    }
+    setSaving(false);
     setSavedSuccess(true);
     setTimeout(() => {
       onNavigateToResources();
@@ -337,6 +349,12 @@ export const CheckinScreen: React.FC<CheckinScreenProps> = ({
           </p>
         </div>
       </div>
+
+      {saveError && (
+        <div role="alert" className="p-3.5 rounded-xl bg-red-100 text-red-800 text-[13px] font-semibold text-center">
+          {saveError}
+        </div>
+      )}
 
       {/* Success Notification */}
       {savedSuccess && (

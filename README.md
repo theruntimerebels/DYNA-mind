@@ -10,6 +10,52 @@ The system combines conversational AI, natural language processing, speech analy
 
 ---
 
+## Running the application
+
+> Status: code complete for the flows below; see **Verification status** for exactly what has and has not been run.
+
+**Layout**
+
+```
+server/                         Express + TypeScript + Mongoose + Zod API (port 4000)
+dyna-mind---distress-monitoring/  patient app (Vite/React, port 3000)  -> proxies /api
+dyna-mind---counsellor-workspace/ counsellor app (Vite/React, port 3001) -> proxies /api
+docs/API.md  docs/ARCHITECTURE.md
+```
+
+**Setup**
+
+```bash
+npm run install:all            # installs server, both apps, and the root runner
+cp server/.env.example server/.env   # then edit (see below)
+npm run dev                    # API :4000, patient app :3000, counsellor app :3001
+```
+
+`server/.env` essentials: `GEMINI_API_KEY`, `GEMINI_MODEL` (any model your key can use; not hard-coded), `MONGODB_URI`, `MONGODB_DB`, `SESSION_SECRET`, optionally `COUNSELLOR_ACCESS_CODE`, `GEMINI_TTS_MODEL`, `CRISIS_GUIDANCE`, `DEMO_MODE`.
+The Gemini key lives only in `server/.env`; the browser apps contain no keys.
+
+- **MongoDB**: run a local `mongod` or use Atlas and set `MONGODB_URI`. If MongoDB is unreachable and `DEMO_MODE` is not `true`, the server refuses to start rather than pretending to persist.
+- **Demo mode**: `DEMO_MODE=true` uses an in-memory store (data lost on restart). `/api/health` reports `storeMode: "memory"`.
+- **No Gemini key**: the API still runs with deterministic fallback replies; responses say `ai.source: "fallback"`.
+- **Dashboard access**: set `COUNSELLOR_ACCESS_CODE`; the counsellor app prompts for it once per browser session. If empty the dashboard is open (development only; a warning is logged).
+- **Production**: `npm run build`; run the API with `npm --prefix server start` (needs `NODE_ENV=production` and a real `SESSION_SECRET`) and serve the two `dist/` folders behind a reverse proxy that forwards `/api`.
+
+**Use it:** open http://localhost:3000, chat in *Companion*, complete a *Check-in*, then open http://localhost:3001 to see the case, trend and follow-up. Refreshing the browser restores the session and messages.
+
+**Tests:** `npm test` (runs `tsx --test` in `server/`: distress engine, safety scan, chat/check-in/dashboard services on the in-memory store, and HTTP-level API tests).
+
+Documentation: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) (architecture, distress calculation, longitudinal analysis, risk rules, collections) and [docs/API.md](docs/API.md).
+
+### Safety boundaries and limitations
+
+- Decision support only: no diagnosis, no medication advice, no legal advice, no judgement of credibility. Risk levels and thresholds are **prototype rules, not clinically validated**.
+- Crisis detection is a regex floor plus model analysis; it will miss paraphrases. A professional safety review of the wording and a real escalation channel are required before real use.
+- The system does **not** notify anyone. Follow-ups appear on the dashboard only; `notificationSent` is always false and the chatbot never claims otherwise.
+- Authentication is a prototype: signed pseudonymous session tokens for users and a shared access code for counsellors (no per-counsellor accounts or audit identity).
+- Existing UI content that is still static (not data-driven): persona name/copy in the patient app ("Elena", case/court wording, archived-session list, check-in page progress text, resource/emergency numbers), counsellor-app notifications, scale-configuration, team and report views, and the metric-card decoration text.
+
+---
+
 ## 1. Overview
 
 Individuals involved in prolonged legal or high-stress situations may experience significant psychological distress that is difficult to identify through occasional assessments alone.
